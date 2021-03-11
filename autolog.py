@@ -31,16 +31,19 @@ print("Trying to connect...")
 while not isConnected:
     print("Waiting for connection...")
     time.sleep(1)
+    isConnected = True  # for debug purposes
 print("Connection established!")
 for line in trial_object:
     # Puts all output in json object
     for key in line:
         if not output.putValue(key, line.get(key)):
             print("The value", line.get(key), "was not successfully converted!")
-    while not input.getBoolean("started", False):
+    while not input.getBoolean("inTask", False):
         time.sleep(1)
+        input.putBoolean("inTask", True)  # for debug purposes
     print("Task started!")
-    while not input.getBoolean("finished", False):
+    while input.getBoolean("inTask", True):
         time.sleep(1)
+        input.putBoolean("inTask", False)  # for debug purposes
     print("Task finished!")
     
