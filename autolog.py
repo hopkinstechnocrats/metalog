@@ -1,5 +1,5 @@
 import json
-from networkTables import NetworkTables
+from networktables import NetworkTables
 import time
 
 json_path = input("Enter the JSON file path: ")
@@ -23,16 +23,24 @@ def connectionListener(connected:bool, info):
 
 NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
 
-sd = NetworkTables.getTable("SmartDashboard")
-sd.addEntryListener(valueChanged)
+output = NetworkTables.getTable("toRobot")
+output.addEntryListener(valueChanged)
+input = NetworkTables.getTable("fromRobot")
 
 print("Trying to connect...")
 while not isConnected:
     print("Waiting for connection...")
     time.sleep(1)
 print("Connection established!")
-
-# Stuff for after the connection is established should go here. 
-maxAcceleration = 4
-
-"autolog" "maxAcceleration"
+for line in trial_object:
+    # Puts all output in json object
+    for key in line:
+        if not output.putValue(key, line.get(key)):
+            print("The value", line.get(key), "was not successfully converted!")
+    while not input.getBoolean("started", False):
+        time.sleep(1)
+    print("Task started!")
+    while not input.getBoolean("finished", False):
+        time.sleep(1)
+    print("Task finished!")
+    
