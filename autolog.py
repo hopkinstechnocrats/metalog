@@ -11,8 +11,7 @@ ip = input("Robot IP Address: ")
 
 NetworkTables.initialize(server=ip)
 
-# This function be rewritten. It doesn't use the table value at all.  
-def valueChanged(table, key, value, isNew):
+def valueChanged(_, key, value, isNew):
     print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isNew))
 
 isConnected = False
