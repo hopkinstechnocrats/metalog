@@ -38,8 +38,6 @@ while True:
     log_data["elapsedAutoTime"] = ml.getNumber("elapsedAutoTime", 0)
     log_data["successful"] = input("successful: (y/n) ") == "y"
     log_data["markers_hit"] = input("Markers hit: ")
-    log_data["markers_hit"] = input("Markers hit: ")
-    log_data["markers_hit"] = input("Markers hit: ")
     print("Log Data: ", log_data)
     if input("Save: (y/n) ") == "y":
         results_object.append(log_data)
@@ -59,10 +57,10 @@ with open(json_input_path, "r") as json_file:
     attributes = json.load(json_file)
     
 while True:
-    for key in attributes:
-        value = input("Enter Input Value: " + key + ": ")
-        if not output.putValue(key, value):
-            print("The value ", value, " was not successfully converted!")
+    # for key in attributes:
+    #     value = input("Enter Input Value: " + key + ": ")
+    #     if not output.putValue(key, value):
+    #         print("The value ", value, " was not successfully converted!")
     while ml.getBoolean("enabled", False):
         time.sleep(1)
     print("Task started!")
