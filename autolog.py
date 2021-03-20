@@ -14,8 +14,7 @@ ip = input("Robot IP Address: ")
 
 NetworkTables.initialize(server=ip)
 
-# This function be rewritten. It doesn't use the table value at all.  
-def valueChanged(table, key, value, isNew):
+def valueChanged(_, key, value, isNew):
     print("valueChanged: key: '%s'; value: %s; isNew: %s" % (key, value, isNew))
 
 isConnected = False
@@ -51,21 +50,20 @@ print("Trying to connect...")
 while not isConnected:
     print("Waiting for connection...")
     time.sleep(1)
+    isConnected = True  # for debug purposes
 print("Connection established!")
-attributes = {}
-with open(json_input_path, "r") as json_file:
-    attributes = json.load(json_file)
-    
-while True:
-    # for key in attributes:
-    #     value = input("Enter Input Value: " + key + ": ")
-    #     if not output.putValue(key, value):
-    #         print("The value ", value, " was not successfully converted!")
-    while ml.getBoolean("enabled", False):
+for line in trial_object:
+    # Puts all output in json object
+    for key in line:
+        if not output.putValue(key, line.get(key)):
+            print("The value", line.get(key), "was not successfully converted!")
+    while not ml.getBoolean("inTask", False):
         time.sleep(1)
+        ml.putBoolean("inTask", True)  # for debug purposes
     print("Task started!")
     while ml.getBoolean("enabled", True):
         time.sleep(1)
+        ml.putBoolean("inTask", False)  # for debug purposes
     print("Task finished!")
     log_data = {}
     log_data["timestamp"] = ml.getString("timeStamp", "no data")
